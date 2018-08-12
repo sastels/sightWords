@@ -76,14 +76,16 @@ export class FlashCards extends Component {
             {this.state.word}
           </Typography>
 
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => this.addToWordIndex(1)}
-          >
-            Next
-          </Button>
+          <div role="navigation">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={() => this.addToWordIndex(1)}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
     );

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Head from "../components/head";
 import FlashCards from "../components/flash_cards";
+import { prePrimer, primer, grade1 } from "../data/dolch";
 
 const styles = theme => ({
   app: {
@@ -30,7 +31,7 @@ class App extends Component {
       case "start":
         return <div>Start section</div>;
       case "flash cards":
-        return <FlashCards words={["the", "and", "cat", "dog"]} />;
+        return <FlashCards words={prePrimer.concat(primer).concat(grade1)} />;
     }
   };
 
