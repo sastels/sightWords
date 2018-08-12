@@ -24,7 +24,7 @@ const styles = theme => ({
   }
 });
 
-class FlashCards extends Component {
+export class FlashCards extends Component {
   state = {
     shuffledWords: [],
     wordIndex: 0,
@@ -72,7 +72,7 @@ class FlashCards extends Component {
             Previous
           </Button>
 
-          <Typography variant="display4" className={classes.word}>
+          <Typography id="word" variant="display4" className={classes.word}>
             {this.state.word}
           </Typography>
 
