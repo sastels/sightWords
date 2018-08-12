@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-
-require("isomorphic-fetch");
 import Head from "../components/head";
+import FlashCards from "../components/flash_cards";
 
 const styles = theme => ({
   app: {
@@ -17,7 +16,7 @@ const styles = theme => ({
 
 class App extends Component {
   state = {
-    section: "start"
+    section: "flash cards"
   };
 
   handleTextInput = field => event => {
@@ -30,6 +29,8 @@ class App extends Component {
     switch (section) {
       case "start":
         return <div>Start section</div>;
+      case "flash cards":
+        return <FlashCards words={["the", "and", "cat", "dog"]} />;
     }
   };
 
