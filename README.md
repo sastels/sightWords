@@ -1,5 +1,5 @@
-# sentenceRecorder
+# sightWords
 
-Record user reading sentences and save to S3 for analysis.
+a Flash card web app
 
-See https://llf-recorder-debug.herokuapp.com/
+https://bens-sight-words.herokuapp.com/
