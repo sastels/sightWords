@@ -4,23 +4,28 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-const styles = theme => ({
-  root: {
-    maxWidth: "500px",
-    display: "inline-block"
-  },
-  title: {
-    marginBottom: 4 * theme.spacing.unit
-  },
+const styles = () => ({
   word: {
-    // fontSize: "100px",
-    marginTop: "100px",
-    marginBottom: "100px"
+    margin: "0",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   },
   button: {
     textTransform: "none",
-    margin: theme.spacing.unit,
-    marginBottom: 4 * theme.spacing.unit
+    marginTop: "20px",
+    marginBottom: "30px"
+  },
+  topBar: {
+    textAlign: "center"
+  },
+  bottomBar: {
+    width: "100%",
+    marginLeft: -10,
+    padding: 0,
+    position: "fixed",
+    bottom: "0px"
   }
 });
 
@@ -61,8 +66,8 @@ export class FlashCards extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div style={{ textAlign: "center" }}>
-        <div className={classes.root}>
+      <div>
+        <div className={classes.topBar}>
           <Button
             variant="contained"
             color="primary"
@@ -71,21 +76,21 @@ export class FlashCards extends Component {
           >
             Previous
           </Button>
+        </div>
 
-          <Typography id="word" variant="display4" className={classes.word}>
-            {this.state.word}
-          </Typography>
+        <Typography id="word" variant="display4" className={classes.word}>
+          {this.state.word}
+        </Typography>
 
-          <div role="navigation">
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={() => this.addToWordIndex(1)}
-            >
-              Next
-            </Button>
-          </div>
+        <div className={classes.bottomBar}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.addToWordIndex(1)}
+          >
+            Next
+          </Button>
         </div>
       </div>
     );
