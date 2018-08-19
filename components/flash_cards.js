@@ -30,56 +30,63 @@ const styles = () => ({
 });
 
 export class FlashCards extends Component {
-  state = {
-    shuffledWords: [],
-    wordIndex: 0,
-    word: ""
+  state = { count: 0 };
+
+  drawAlreadyKnown = words => {
+    const known = words.filter(w => w.level === 0);
+    if (known.length === 0) {
+      return undefined;
+    }
+    return known[Math.floor(Math.random() * known.length)].text;
   };
 
-  componentDidMount = () => {
-    const shuffledWords = this.shuffleWords(this.props.words);
-    this.setState({
-      shuffledWords: shuffledWords,
-      wordIndex: 0,
-      word: shuffledWords[0]
+  drawWord = (words, pickKnownProbability) => {
+    if (words.length === 0) {
+      return 0;
+    }
+    if (Math.random() < pickKnownProbability) {
+      const picked = this.drawAlreadyKnown(words);
+      if (picked !== undefined) {
+        return picked;
+      }
+    }
+
+    let totalScore = 0;
+    words.forEach(w => {
+      if (w.level !== 0) {
+        w.startScore = totalScore;
+        totalScore += w.score;
+        w.endScore = totalScore;
+      }
     });
+    const randomScore = Math.random() * totalScore; // note that Math.random() < 1
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].level !== 0 && words[i].endScore > randomScore) {
+        return words[i].text;
+      }
+    }
   };
 
-  shuffleWords = words => {
-    let wordsReturn = [].concat(words);
-    wordsReturn.sort(() => {
-      return 0.5 - Math.random();
-    });
-    return wordsReturn;
-  };
-
-  addToWordIndex = n => {
-    const newWordIndex =
-      (this.state.shuffledWords.length + this.state.wordIndex + n) %
-      this.state.shuffledWords.length;
-    this.setState({
-      wordIndex: newWordIndex,
-      word: this.state.shuffledWords[newWordIndex]
-    });
+  answer = (text, isCorrect) => {
+    this.setState({ count: this.state.count + 1 });
+    this.props.handleGuess(text, isCorrect);
   };
 
   render() {
     const { classes } = this.props;
+
+    if (this.props.words.length === 0) {
+      return <div>No Words</div>;
+    }
+
+    const text = this.drawWord(this.props.words, 0);
+
     return (
       <div>
-        <div className={classes.topBar}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => this.addToWordIndex(-1)}
-          >
-            Previous
-          </Button>
-        </div>
+        <div className={classes.topBar}>{this.state.count}</div>
 
         <Typography id="word" variant="display4" className={classes.word}>
-          {this.state.word}
+          {text}
         </Typography>
 
         <div className={classes.bottomBar}>
@@ -87,9 +94,18 @@ export class FlashCards extends Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => this.addToWordIndex(1)}
+            onClick={() => this.answer(text, false)}
           >
-            Next
+            Try again
+          </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.answer(text, true)}
+          >
+            Correct!
           </Button>
         </div>
       </div>
@@ -99,7 +115,8 @@ export class FlashCards extends Component {
 
 FlashCards.propTypes = {
   classes: PropTypes.object.isRequired,
-  words: PropTypes.array.isRequired
+  words: PropTypes.array.isRequired,
+  handleGuess: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FlashCards);
