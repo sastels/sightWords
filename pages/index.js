@@ -57,7 +57,7 @@ class App extends Component {
     this.setState({ words: words });
   };
 
-  scoreFunction = level => 1.0 / Math.pow(2, level);
+  scoreFunction = level => 1.0 / Math.pow(3, level);
 
   handleGuess = (words, text, isCorrect) => {
     let w = words.filter(w => w.text === text)[0];
@@ -70,8 +70,6 @@ class App extends Component {
     }
     w.correct = Math.max(w.correct, 0);
     w.correct = Math.min(w.correct, 3);
-
-    console.log(isCorrect, w);
   };
 
   sectionToDisplay = section => {
@@ -92,9 +90,6 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log("index words", this.state.words);
-    //
     return (
       <div className={classes.app}>
         <Head title="Sight Words" />

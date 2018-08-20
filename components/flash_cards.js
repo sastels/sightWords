@@ -13,6 +13,8 @@ const styles = () => ({
     transform: "translate(-50%, -50%)"
   },
   button: {
+    marginLeft: "10%",
+    marginRight: "10%",
     textTransform: "none",
     marginTop: "20px",
     marginBottom: "30px"
@@ -34,25 +36,19 @@ export class FlashCards extends Component {
 
   drawAlreadyKnown = words => {
     const known = words.filter(w => w.level === 0);
-    if (known.length === 0) {
+    if (known.length < 5) {
       return undefined;
     }
-    return known[Math.floor(Math.random() * known.length)].text;
+    return known[Math.floor(Math.random() * known.length)];
   };
 
-  drawWord = (words, pickKnownProbability) => {
-    if (words.length === 0) {
-      return 0;
-    }
-    if (Math.random() < pickKnownProbability) {
-      const picked = this.drawAlreadyKnown(words);
-      if (picked !== undefined) {
-        return picked;
-      }
-    }
-
+  drawNotKnownYet = words => {
     let totalScore = 0;
-    words.forEach(w => {
+    const notKnown = words.filter(w => w.level !== 0);
+    if (notKnown.length === 0) {
+      return undefined;
+    }
+    notKnown.forEach(w => {
       if (w.level !== 0) {
         w.startScore = totalScore;
         totalScore += w.score;
@@ -60,11 +56,29 @@ export class FlashCards extends Component {
       }
     });
     const randomScore = Math.random() * totalScore; // note that Math.random() < 1
-    for (let i = 0; i < words.length; i++) {
-      if (words[i].level !== 0 && words[i].endScore > randomScore) {
-        return words[i].text;
+    for (let i = 0; i < notKnown.length; i++) {
+      if (notKnown[i].level !== 0 && notKnown[i].endScore > randomScore) {
+        return notKnown[i];
       }
     }
+  };
+
+  drawWord = (words, pickKnownProbability) => {
+    if (words.length === 0) {
+      return 0;
+    }
+    let picked;
+    if (Math.random() < pickKnownProbability) {
+      picked = this.drawAlreadyKnown(words);
+      if (picked !== undefined) {
+        return picked;
+      }
+    }
+    picked = this.drawNotKnownYet(words);
+    if (picked !== undefined) {
+      return picked;
+    }
+    return this.drawAlreadyKnown(words);
   };
 
   answer = (text, isCorrect) => {
@@ -79,11 +93,13 @@ export class FlashCards extends Component {
       return <div>No Words</div>;
     }
 
-    const text = this.drawWord(this.props.words, 0);
-
+    const w = this.drawWord(this.props.words, 0.2);
+    const text = w.text;
     return (
       <div>
-        <div className={classes.topBar}>{this.state.count}</div>
+        <div className={classes.topBar}>
+          {"level: " + w.level + "  correct: w.correct"}
+        </div>
 
         <Typography id="word" variant="display4" className={classes.word}>
           {text}
