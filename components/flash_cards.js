@@ -13,6 +13,8 @@ const styles = () => ({
     transform: "translate(-50%, -50%)"
   },
   button: {
+    marginLeft: "10%",
+    marginRight: "10%",
     textTransform: "none",
     marginTop: "20px",
     marginBottom: "30px"
@@ -30,56 +32,76 @@ const styles = () => ({
 });
 
 export class FlashCards extends Component {
-  state = {
-    shuffledWords: [],
-    wordIndex: 0,
-    word: ""
+  state = { count: 0 };
+
+  drawAlreadyKnown = words => {
+    const known = words.filter(w => w.level === 0);
+    if (known.length < 5) {
+      return undefined;
+    }
+    return known[Math.floor(Math.random() * known.length)];
   };
 
-  componentDidMount = () => {
-    const shuffledWords = this.shuffleWords(this.props.words);
-    this.setState({
-      shuffledWords: shuffledWords,
-      wordIndex: 0,
-      word: shuffledWords[0]
+  drawNotKnownYet = words => {
+    let totalScore = 0;
+    const notKnown = words.filter(w => w.level !== 0);
+    if (notKnown.length === 0) {
+      return undefined;
+    }
+    notKnown.forEach(w => {
+      if (w.level !== 0) {
+        w.startScore = totalScore;
+        totalScore += w.score;
+        w.endScore = totalScore;
+      }
     });
+    const randomScore = Math.random() * totalScore; // note that Math.random() < 1
+    for (let i = 0; i < notKnown.length; i++) {
+      if (notKnown[i].level !== 0 && notKnown[i].endScore > randomScore) {
+        return notKnown[i];
+      }
+    }
   };
 
-  shuffleWords = words => {
-    let wordsReturn = [].concat(words);
-    wordsReturn.sort(() => {
-      return 0.5 - Math.random();
-    });
-    return wordsReturn;
+  drawWord = (words, pickKnownProbability) => {
+    if (words.length === 0) {
+      return 0;
+    }
+    let picked;
+    if (Math.random() < pickKnownProbability) {
+      picked = this.drawAlreadyKnown(words);
+      if (picked !== undefined) {
+        return picked;
+      }
+    }
+    picked = this.drawNotKnownYet(words);
+    if (picked !== undefined) {
+      return picked;
+    }
+    return this.drawAlreadyKnown(words);
   };
 
-  addToWordIndex = n => {
-    const newWordIndex =
-      (this.state.shuffledWords.length + this.state.wordIndex + n) %
-      this.state.shuffledWords.length;
-    this.setState({
-      wordIndex: newWordIndex,
-      word: this.state.shuffledWords[newWordIndex]
-    });
+  answer = (text, isCorrect) => {
+    this.setState({ count: this.state.count + 1 });
+    this.props.handleGuess(text, isCorrect);
   };
 
   render() {
     const { classes } = this.props;
+
+    if (this.props.words.length === 0) {
+      return <div>No Words</div>;
+    }
+    const w = this.drawWord(this.props.words, 0.2);
+    const text = w.text;
     return (
-      <div>
+      <div id="flash_cards">
         <div className={classes.topBar}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => this.addToWordIndex(-1)}
-          >
-            Previous
-          </Button>
+          {"level: " + w.level + "  correct: w.correct"}
         </div>
 
         <Typography id="word" variant="display4" className={classes.word}>
-          {this.state.word}
+          {text}
         </Typography>
 
         <div className={classes.bottomBar}>
@@ -87,9 +109,18 @@ export class FlashCards extends Component {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => this.addToWordIndex(1)}
+            onClick={() => this.answer(text, false)}
           >
-            Next
+            Try again
+          </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.answer(text, true)}
+          >
+            Correct!
           </Button>
         </div>
       </div>
@@ -99,7 +130,8 @@ export class FlashCards extends Component {
 
 FlashCards.propTypes = {
   classes: PropTypes.object.isRequired,
-  words: PropTypes.array.isRequired
+  words: PropTypes.array.isRequired,
+  handleGuess: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FlashCards);
