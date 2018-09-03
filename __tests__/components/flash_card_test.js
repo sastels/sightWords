@@ -88,7 +88,13 @@ describe("FlashCards", () => {
 
   it("has a correct drawWord function", () => {});
 
-  it("has a correct answer function", () => {});
+  it("has a correct answer function", () => {
+    const instance = mounted().instance();
+    expect(instance.state.count).toEqual(0);
+    instance.answer("hi", 123);
+    expect(instance.state.count).toEqual(1);
+    expect(props.handleGuess).toBeCalledWith("hi", 123);
+  });
 
   it("has a correct styles function", () => {
     expect(styles()).not.toBeUndefined();
