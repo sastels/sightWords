@@ -16,7 +16,7 @@ scoreFunction: 0 -> 0, n -> 2^n
 totalScore
  */
 
-const styles = theme => ({
+export const styles = theme => ({
   app: {
     textAlign: "center",
     padding: "10px"
@@ -26,7 +26,7 @@ const styles = theme => ({
   }
 });
 
-class App extends Component {
+export class Index extends Component {
   state = {
     section: "flash cards",
     words: []
@@ -61,6 +61,9 @@ class App extends Component {
 
   handleGuess = (words, text, isCorrect) => {
     let w = words.filter(w => w.text === text)[0];
+    if (w === undefined) {
+      return undefined;
+    }
     w.correct += isCorrect ? 1 : -1;
     if (w.correct >= 3) {
       w.level = 0;
@@ -75,7 +78,7 @@ class App extends Component {
   sectionToDisplay = section => {
     switch (section) {
       case "start":
-        return <div>Start section</div>;
+        return <div id="Start">Start section</div>;
       case "flash cards":
         return (
           <FlashCards
@@ -99,8 +102,8 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
+Index.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(Index);

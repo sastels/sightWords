@@ -95,7 +95,7 @@ export class FlashCards extends Component {
     const w = this.drawWord(this.props.words, 0.2);
     const text = w.text;
     return (
-      <div>
+      <div id="flash_cards">
         <div className={classes.topBar}>
           {"level: " + w.level + "  correct: w.correct"}
         </div>
