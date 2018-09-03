@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-const styles = () => ({
+export const styles = () => ({
   word: {
     margin: "0",
     position: "absolute",
@@ -34,9 +34,9 @@ const styles = () => ({
 export class FlashCards extends Component {
   state = { count: 0 };
 
-  drawAlreadyKnown = words => {
+  drawAlreadyKnown = (words, minWordsNeeded) => {
     const known = words.filter(w => w.level === 0);
-    if (known.length < 5) {
+    if (known.length < minWordsNeeded) {
       return undefined;
     }
     return known[Math.floor(Math.random() * known.length)];
@@ -69,7 +69,7 @@ export class FlashCards extends Component {
     }
     let picked;
     if (Math.random() < pickKnownProbability) {
-      picked = this.drawAlreadyKnown(words);
+      picked = this.drawAlreadyKnown(words, 5);
       if (picked !== undefined) {
         return picked;
       }
@@ -78,7 +78,7 @@ export class FlashCards extends Component {
     if (picked !== undefined) {
       return picked;
     }
-    return this.drawAlreadyKnown(words);
+    return this.drawAlreadyKnown(words, 0);
   };
 
   answer = (text, isCorrect) => {
