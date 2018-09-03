@@ -25,7 +25,11 @@ describe("FlashCards", () => {
   beforeEach(() => {
     props = {
       classes: {},
-      words: ["cat", "dog"]
+      words: [
+        { text: "cat", level: 1, score: 1, correct: 0 },
+        { text: "dog", level: 2, score: 0.5, correct: 0 }
+      ],
+      handleGuess: jest.fn()
     };
 
     _mounted = undefined;

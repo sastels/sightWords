@@ -92,7 +92,6 @@ export class FlashCards extends Component {
     if (this.props.words.length === 0) {
       return <div>No Words</div>;
     }
-
     const w = this.drawWord(this.props.words, 0.2);
     const text = w.text;
     return (
