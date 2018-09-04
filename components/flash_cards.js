@@ -82,8 +82,12 @@ export class FlashCards extends Component {
   };
 
   answer = (text, isCorrect) => {
-    this.setState({ count: this.state.count + 1 });
+    const newCount = this.state.count + 1;
+    this.setState({ count: newCount });
     this.props.handleGuess(text, isCorrect);
+    if (newCount % 5 === 0) {
+      this.props.switchToProgress();
+    }
   };
 
   render() {
@@ -92,7 +96,7 @@ export class FlashCards extends Component {
     if (this.props.words.length === 0) {
       return <div>No Words</div>;
     }
-    const w = this.drawWord(this.props.words, 0.2);
+    const w = this.drawWord(this.props.words, 0.75);
     const text = w.text;
     return (
       <div id="flash_cards">
@@ -131,7 +135,8 @@ export class FlashCards extends Component {
 FlashCards.propTypes = {
   classes: PropTypes.object.isRequired,
   words: PropTypes.array.isRequired,
-  handleGuess: PropTypes.func.isRequired
+  handleGuess: PropTypes.func.isRequired,
+  switchToProgress: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FlashCards);

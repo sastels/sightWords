@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Head from "../components/head";
 import FlashCards from "../components/flash_cards";
+import Progress from "../components/progress";
 import { prePrimer, primer, grade1 } from "../data/dolch";
 
 /*
@@ -79,6 +80,13 @@ export class Index extends Component {
     switch (section) {
       case "start":
         return <div id="Start">Start section</div>;
+      case "progress":
+        return (
+          <Progress
+            words={this.state.words}
+            switchToFlashCards={() => this.setState({ section: "flash cards" })}
+          />
+        );
       case "flash cards":
         return (
           <FlashCards
@@ -86,6 +94,7 @@ export class Index extends Component {
             handleGuess={(text, isCorrect) =>
               this.handleGuess(this.state.words, text, isCorrect)
             }
+            switchToProgress={() => this.setState({ section: "progress" })}
           />
         );
     }
