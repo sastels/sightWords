@@ -65,7 +65,7 @@ export class FlashCards extends Component {
 
   drawWord = (words, pickKnownProbability) => {
     if (words.length === 0) {
-      return 0;
+      return undefined;
     }
     let picked;
     if (Math.random() < pickKnownProbability) {
