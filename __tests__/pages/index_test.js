@@ -66,14 +66,14 @@ describe("Index", () => {
       const words = instance.state.words;
       expect(words[0].correct).toEqual(0);
 
-      [1, 2, 3].forEach(n => {
+      [3].forEach(n => {
         instance.handleGuess(words, words[0].text, true);
         expect(words[0].correct).toEqual(n);
       });
       instance.handleGuess(words, words[0].text, true);
       expect(words[0].correct).toEqual(3);
 
-      [2, 1, 0].forEach(n => {
+      [0].forEach(n => {
         instance.handleGuess(words, words[0].text, false);
         expect(words[0].correct).toEqual(n);
       });

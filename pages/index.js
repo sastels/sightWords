@@ -65,7 +65,7 @@ export class Index extends Component {
     if (w === undefined) {
       return undefined;
     }
-    w.correct += isCorrect ? 1 : -1;
+    w.correct += isCorrect ? 3 : -3;
     w.correct = Math.max(w.correct, 0);
     w.correct = Math.min(w.correct, 3);
   };
