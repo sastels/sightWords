@@ -28,7 +28,8 @@ describe("FlashCards", () => {
     props = {
       classes: {},
       words: wordsFixure,
-      handleGuess: jest.fn()
+      handleGuess: jest.fn(),
+      switchToProgress: jest.fn()
     };
 
     _mounted = undefined;
@@ -80,18 +81,18 @@ describe("FlashCards", () => {
     expect(wordCounts["w2.1"] / numIterations).toBeCloseTo(0.25, 2);
     expect(wordCounts["w2.2"] / numIterations).toBeCloseTo(0.25, 2);
 
-    expect(drawNotKnownYet([{ text: "w0", level: 0 }])).toBeUndefined();
+    expect(drawNotKnownYet([{ text: "w0", correct: 3 }])).toBeUndefined();
   });
 
   it("has a correct drawWord function", () => {
     const drawWord = mounted().instance().drawWord;
     const words = [
-      { text: "w0", level: 0, score: 1, correct: 3 },
-      { text: "w0", level: 0, score: 1, correct: 3 },
-      { text: "w0", level: 0, score: 1, correct: 3 },
-      { text: "w0", level: 0, score: 1, correct: 3 },
-      { text: "w0", level: 0, score: 1, correct: 3 },
-      { text: "w1", level: 1, score: 1, correct: 0 }
+      { text: "w0", score: 1, correct: 3 },
+      { text: "w0", score: 1, correct: 3 },
+      { text: "w0", score: 1, correct: 3 },
+      { text: "w0", score: 1, correct: 3 },
+      { text: "w0", score: 1, correct: 3 },
+      { text: "w1", score: 1, correct: 0 }
     ];
     for (let i = 0; i < 100; i++) {
       expect(drawWord(words, 0).text).toEqual("w1");
@@ -99,7 +100,7 @@ describe("FlashCards", () => {
     }
 
     expect(drawWord([], 0.5)).toBeUndefined();
-    expect(drawWord([{ text: "w0", level: 0 }], 0).text).toEqual("w0");
+    expect(drawWord([{ text: "w0", correct: 3 }], 0).text).toEqual("w0");
   });
 
   it("has a correct answer function", () => {

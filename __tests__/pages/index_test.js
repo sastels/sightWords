@@ -80,22 +80,6 @@ describe("Index", () => {
       instance.handleGuess(words, words[0].text, false);
       expect(words[0].correct).toEqual(0);
     });
-
-    it("changes word.level appropriately", () => {
-      const instance = mounted().instance();
-      const words = instance.state.words;
-      expect(words[0].level).not.toEqual(0);
-
-      [1, 2].forEach(() => {
-        instance.handleGuess(words, words[0].text, true);
-        expect(words[0].level).not.toEqual(0);
-      });
-      instance.handleGuess(words, words[0].text, true);
-      expect(words[0].level).toEqual(0);
-
-      instance.handleGuess(words, words[0].text, false);
-      expect(words[0].level).toEqual(1);
-    });
   });
 
   it("contains a correct sectionToDisplay function", () => {

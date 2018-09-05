@@ -35,7 +35,7 @@ export class FlashCards extends Component {
   state = { count: 0 };
 
   drawAlreadyKnown = (words, minWordsNeeded) => {
-    const known = words.filter(w => w.level === 0);
+    const known = words.filter(w => w.correct === 3);
     if (known.length < minWordsNeeded) {
       return undefined;
     }
@@ -44,20 +44,18 @@ export class FlashCards extends Component {
 
   drawNotKnownYet = words => {
     let totalScore = 0;
-    const notKnown = words.filter(w => w.level !== 0);
+    const notKnown = words.filter(w => w.correct !== 3);
     if (notKnown.length === 0) {
       return undefined;
     }
     notKnown.forEach(w => {
-      if (w.level !== 0) {
-        w.startScore = totalScore;
-        totalScore += w.score;
-        w.endScore = totalScore;
-      }
+      w.startScore = totalScore;
+      totalScore += w.score;
+      w.endScore = totalScore;
     });
     const randomScore = Math.random() * totalScore; // note that Math.random() < 1
     for (let i = 0; i < notKnown.length; i++) {
-      if (notKnown[i].level !== 0 && notKnown[i].endScore > randomScore) {
+      if (notKnown[i].endScore > randomScore) {
         return notKnown[i];
       }
     }

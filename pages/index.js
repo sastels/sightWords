@@ -66,12 +66,6 @@ export class Index extends Component {
       return undefined;
     }
     w.correct += isCorrect ? 1 : -1;
-    if (w.correct >= 3) {
-      w.level = 0;
-    }
-    if (isCorrect === false && w.level === 0) {
-      w.level = 1;
-    }
     w.correct = Math.max(w.correct, 0);
     w.correct = Math.min(w.correct, 3);
   };
