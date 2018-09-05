@@ -1,33 +1,28 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import { Progress, styles } from "../../components/progress";
+import wordsFixure from "../fixtures/words_fixture";
 
 const { axe, toHaveNoViolations } = require("jest-axe");
 expect.extend(toHaveNoViolations);
 
 describe("Progress screen", () => {
   let props;
-  let _mounted, _shallowMounted;
+  let _mounted;
   const mounted = () => {
     if (!_mounted) {
       _mounted = mount(<Progress {...props} />);
     }
     return _mounted;
   };
-  const shallowMounted = () => {
-    if (!_shallowMounted) {
-      _shallowMounted = shallow(<Progress {...props} />);
-    }
-    return _shallowMounted;
-  };
 
   beforeEach(() => {
     props = {
       classes: {},
+      words: wordsFixure,
       switchToFlashCards: jest.fn()
     };
     _mounted = undefined;
-    _shallowMounted = undefined;
   });
 
   it("passes axe tests", async () => {

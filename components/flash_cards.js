@@ -83,9 +83,6 @@ export class FlashCards extends Component {
     const newCount = this.state.count + 1;
     this.setState({ count: newCount });
     this.props.handleGuess(text, isCorrect);
-    if (newCount % 5 === 0) {
-      this.props.switchToProgress();
-    }
   };
 
   render() {
@@ -98,9 +95,12 @@ export class FlashCards extends Component {
     const text = w.text;
     return (
       <div id="flash_cards">
-        <div className={classes.topBar}>
-          {"level: " + w.level + "  correct: w.correct"}
-        </div>
+        <Button
+          className={classes.button}
+          onClick={this.props.switchToProgress}
+        >
+          See Progress
+        </Button>
 
         <Typography id="word" variant="display4" className={classes.word}>
           {text}
