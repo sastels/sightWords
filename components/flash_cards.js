@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { NUM_CORRECT_NEEDED } from "../utils/constants";
 
 export const styles = () => ({
   word: {
@@ -35,7 +36,7 @@ export class FlashCards extends Component {
   state = { count: 0 };
 
   drawAlreadyKnown = (words, minWordsNeeded) => {
-    const known = words.filter(w => w.level === 0);
+    const known = words.filter(w => w.correct === NUM_CORRECT_NEEDED);
     if (known.length < minWordsNeeded) {
       return undefined;
     }
@@ -44,20 +45,18 @@ export class FlashCards extends Component {
 
   drawNotKnownYet = words => {
     let totalScore = 0;
-    const notKnown = words.filter(w => w.level !== 0);
+    const notKnown = words.filter(w => w.correct !== NUM_CORRECT_NEEDED);
     if (notKnown.length === 0) {
       return undefined;
     }
     notKnown.forEach(w => {
-      if (w.level !== 0) {
-        w.startScore = totalScore;
-        totalScore += w.score;
-        w.endScore = totalScore;
-      }
+      w.startScore = totalScore;
+      totalScore += w.score;
+      w.endScore = totalScore;
     });
     const randomScore = Math.random() * totalScore; // note that Math.random() < 1
     for (let i = 0; i < notKnown.length; i++) {
-      if (notKnown[i].level !== 0 && notKnown[i].endScore > randomScore) {
+      if (notKnown[i].endScore > randomScore) {
         return notKnown[i];
       }
     }
@@ -82,7 +81,8 @@ export class FlashCards extends Component {
   };
 
   answer = (text, isCorrect) => {
-    this.setState({ count: this.state.count + 1 });
+    const newCount = this.state.count + 1;
+    this.setState({ count: newCount });
     this.props.handleGuess(text, isCorrect);
   };
 
@@ -92,13 +92,16 @@ export class FlashCards extends Component {
     if (this.props.words.length === 0) {
       return <div>No Words</div>;
     }
-    const w = this.drawWord(this.props.words, 0.2);
+    const w = this.drawWord(this.props.words, 0.75);
     const text = w.text;
     return (
       <div id="flash_cards">
-        <div className={classes.topBar}>
-          {"level: " + w.level + "  correct: w.correct"}
-        </div>
+        <Button
+          className={classes.button}
+          onClick={this.props.switchToProgress}
+        >
+          See Progress
+        </Button>
 
         <Typography id="word" variant="display4" className={classes.word}>
           {text}
@@ -131,7 +134,8 @@ export class FlashCards extends Component {
 FlashCards.propTypes = {
   classes: PropTypes.object.isRequired,
   words: PropTypes.array.isRequired,
-  handleGuess: PropTypes.func.isRequired
+  handleGuess: PropTypes.func.isRequired,
+  switchToProgress: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FlashCards);

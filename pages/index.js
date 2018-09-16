@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Head from "../components/head";
 import FlashCards from "../components/flash_cards";
+import Progress from "../components/progress";
 import { prePrimer, primer, grade1 } from "../data/dolch";
+import { NUM_CORRECT_NEEDED } from "../utils/constants";
 
 /*
 Word object: {
@@ -65,20 +67,21 @@ export class Index extends Component {
       return undefined;
     }
     w.correct += isCorrect ? 1 : -1;
-    if (w.correct >= 3) {
-      w.level = 0;
-    }
-    if (isCorrect === false && w.level === 0) {
-      w.level = 1;
-    }
     w.correct = Math.max(w.correct, 0);
-    w.correct = Math.min(w.correct, 3);
+    w.correct = Math.min(w.correct, NUM_CORRECT_NEEDED);
   };
 
   sectionToDisplay = section => {
     switch (section) {
       case "start":
         return <div id="Start">Start section</div>;
+      case "progress":
+        return (
+          <Progress
+            words={this.state.words}
+            switchToFlashCards={() => this.setState({ section: "flash cards" })}
+          />
+        );
       case "flash cards":
         return (
           <FlashCards
@@ -86,6 +89,7 @@ export class Index extends Component {
             handleGuess={(text, isCorrect) =>
               this.handleGuess(this.state.words, text, isCorrect)
             }
+            switchToProgress={() => this.setState({ section: "progress" })}
           />
         );
     }

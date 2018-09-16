@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
-
 import { styles, Index } from "../../pages/index";
+import { NUM_CORRECT_NEEDED } from "../../utils/constants";
 
 const { axe, toHaveNoViolations } = require("jest-axe");
 expect.extend(toHaveNoViolations);
@@ -66,35 +66,20 @@ describe("Index", () => {
       const words = instance.state.words;
       expect(words[0].correct).toEqual(0);
 
-      [1, 2, 3].forEach(n => {
+      [1, 2, 3, 4, 5, 6].forEach(n => {
         instance.handleGuess(words, words[0].text, true);
-        expect(words[0].correct).toEqual(n);
+        expect(words[0].correct).toEqual(
+          n < NUM_CORRECT_NEEDED ? n : NUM_CORRECT_NEEDED
+        );
       });
-      instance.handleGuess(words, words[0].text, true);
-      expect(words[0].correct).toEqual(3);
 
-      [2, 1, 0].forEach(n => {
+      instance.handleGuess(words, words[0].text, false);
+      expect(words[0].correct).toEqual(NUM_CORRECT_NEEDED - 1);
+
+      [0, 1, 2, 3, 4, 5, 6].forEach(() => {
         instance.handleGuess(words, words[0].text, false);
-        expect(words[0].correct).toEqual(n);
       });
-      instance.handleGuess(words, words[0].text, false);
       expect(words[0].correct).toEqual(0);
-    });
-
-    it("changes word.level appropriately", () => {
-      const instance = mounted().instance();
-      const words = instance.state.words;
-      expect(words[0].level).not.toEqual(0);
-
-      [1, 2].forEach(() => {
-        instance.handleGuess(words, words[0].text, true);
-        expect(words[0].level).not.toEqual(0);
-      });
-      instance.handleGuess(words, words[0].text, true);
-      expect(words[0].level).toEqual(0);
-
-      instance.handleGuess(words, words[0].text, false);
-      expect(words[0].level).toEqual(1);
     });
   });
 
