@@ -35,16 +35,6 @@ export const styles = () => ({
 });
 
 export class Progress extends Component {
-  // wordStatus = numCorrect => {
-  //   if (numCorrect >= NUM_CORRECT_NEEDED) {
-  //     return "Know";
-  //   }
-  //   if (numCorrect === 0) {
-  //     return "Not Yet";
-  //   }
-  //   return "Learning";
-  // };
-
   render() {
     const { classes, words } = this.props;
     let levels = [];

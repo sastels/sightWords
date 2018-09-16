@@ -76,7 +76,7 @@ describe("Index", () => {
       instance.handleGuess(words, words[0].text, false);
       expect(words[0].correct).toEqual(NUM_CORRECT_NEEDED - 1);
 
-      [0, 1, 2, 3, 4, 5, 6].forEach(n => {
+      [0, 1, 2, 3, 4, 5, 6].forEach(() => {
         instance.handleGuess(words, words[0].text, false);
       });
       expect(words[0].correct).toEqual(0);
