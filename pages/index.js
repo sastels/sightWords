@@ -5,6 +5,7 @@ import Head from "../components/head";
 import FlashCards from "../components/flash_cards";
 import Progress from "../components/progress";
 import { prePrimer, primer, grade1 } from "../data/dolch";
+import { NUM_CORRECT_NEEDED } from "../utils/constants";
 
 /*
 Word object: {
@@ -65,9 +66,9 @@ export class Index extends Component {
     if (w === undefined) {
       return undefined;
     }
-    w.correct += isCorrect ? 3 : -3;
+    w.correct += isCorrect ? 1 : -1;
     w.correct = Math.max(w.correct, 0);
-    w.correct = Math.min(w.correct, 3);
+    w.correct = Math.min(w.correct, NUM_CORRECT_NEEDED);
   };
 
   sectionToDisplay = section => {

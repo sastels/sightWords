@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { NUM_CORRECT_NEEDED } from "../utils/constants";
 
 export const styles = () => ({
   word: {
@@ -35,7 +36,7 @@ export class FlashCards extends Component {
   state = { count: 0 };
 
   drawAlreadyKnown = (words, minWordsNeeded) => {
-    const known = words.filter(w => w.correct === 3);
+    const known = words.filter(w => w.correct === NUM_CORRECT_NEEDED);
     if (known.length < minWordsNeeded) {
       return undefined;
     }
@@ -44,7 +45,7 @@ export class FlashCards extends Component {
 
   drawNotKnownYet = words => {
     let totalScore = 0;
-    const notKnown = words.filter(w => w.correct !== 3);
+    const notKnown = words.filter(w => w.correct !== NUM_CORRECT_NEEDED);
     if (notKnown.length === 0) {
       return undefined;
     }

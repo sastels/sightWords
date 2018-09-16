@@ -2,6 +2,7 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 import { FlashCards, styles } from "../../components/flash_cards";
 import wordsFixure from "../fixtures/words_fixture";
+import { NUM_CORRECT_NEEDED } from "../../utils/constants";
 
 const { axe, toHaveNoViolations } = require("jest-axe");
 expect.extend(toHaveNoViolations);
@@ -87,11 +88,11 @@ describe("FlashCards", () => {
   it("has a correct drawWord function", () => {
     const drawWord = mounted().instance().drawWord;
     const words = [
-      { text: "w0", score: 1, correct: 3 },
-      { text: "w0", score: 1, correct: 3 },
-      { text: "w0", score: 1, correct: 3 },
-      { text: "w0", score: 1, correct: 3 },
-      { text: "w0", score: 1, correct: 3 },
+      { text: "w0", score: 1, correct: NUM_CORRECT_NEEDED },
+      { text: "w0", score: 1, correct: NUM_CORRECT_NEEDED },
+      { text: "w0", score: 1, correct: NUM_CORRECT_NEEDED },
+      { text: "w0", score: 1, correct: NUM_CORRECT_NEEDED },
+      { text: "w0", score: 1, correct: NUM_CORRECT_NEEDED },
       { text: "w1", score: 1, correct: 0 }
     ];
     for (let i = 0; i < 100; i++) {
@@ -100,7 +101,9 @@ describe("FlashCards", () => {
     }
 
     expect(drawWord([], 0.5)).toBeUndefined();
-    expect(drawWord([{ text: "w0", correct: 3 }], 0).text).toEqual("w0");
+    expect(
+      drawWord([{ text: "w0", correct: NUM_CORRECT_NEEDED }], 0).text
+    ).toEqual("w0");
   });
 
   it("has a correct answer function", () => {

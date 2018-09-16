@@ -12,6 +12,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import { NUM_CORRECT_NEEDED } from "../utils/constants";
+
 export const styles = () => ({
   root: {
     maxWidth: "500px",
@@ -33,15 +35,15 @@ export const styles = () => ({
 });
 
 export class Progress extends Component {
-  wordStatus = numCorrect => {
-    if (numCorrect === 3) {
-      return "Know";
-    }
-    if (numCorrect === 0) {
-      return "Not Yet";
-    }
-    return "Learning";
-  };
+  // wordStatus = numCorrect => {
+  //   if (numCorrect >= NUM_CORRECT_NEEDED) {
+  //     return "Know";
+  //   }
+  //   if (numCorrect === 0) {
+  //     return "Not Yet";
+  //   }
+  //   return "Learning";
+  // };
 
   render() {
     const { classes, words } = this.props;
@@ -69,7 +71,11 @@ export class Progress extends Component {
                         <TableCell>Known</TableCell>
                         <TableCell>
                           {words
-                            .filter(w => w.correct === 3 && w.level === level)
+                            .filter(
+                              w =>
+                                w.correct >= NUM_CORRECT_NEEDED &&
+                                w.level === level
+                            )
                             .map(w => w.text)
                             .sort((a, b) =>
                               a.localeCompare(b, undefined, {
@@ -84,7 +90,11 @@ export class Progress extends Component {
                         <TableCell>Not Yet</TableCell>
                         <TableCell>
                           {words
-                            .filter(w => w.correct !== 3 && w.level === level)
+                            .filter(
+                              w =>
+                                w.correct !== NUM_CORRECT_NEEDED &&
+                                w.level === level
+                            )
                             .map(w => w.text)
                             .sort((a, b) =>
                               a.localeCompare(b, undefined, {
