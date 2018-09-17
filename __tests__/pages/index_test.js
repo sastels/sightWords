@@ -6,7 +6,11 @@ import { NUM_CORRECT_NEEDED } from "../../utils/constants";
 const { axe, toHaveNoViolations } = require("jest-axe");
 expect.extend(toHaveNoViolations);
 
-global.localStorage = { setItem: jest.fn(), getItem: jest.fn() };
+global.localStorage = {
+  setItem: jest.fn(),
+  getItem: jest.fn(),
+  removeItem: jest.fn
+};
 global.localStorage.getItem.mockReturnValue(null);
 
 describe("Index", () => {
@@ -50,11 +54,13 @@ describe("Index", () => {
     expect(mounted().find("#flash_cards")).toHaveLength(1);
   });
 
-  it("has a correct scoreFunction function", () => {
-    const instance = mounted().instance();
-    expect(instance.scoreFunction(0)).toBeCloseTo(1.0, 4);
-    expect(instance.scoreFunction(1)).toBeCloseTo(0.3333, 4);
-    expect(instance.scoreFunction(2)).toBeCloseTo(0.1111, 4);
+  describe("scoreFunction function", () => {
+    it("works as expected", () => {
+      const instance = mounted().instance();
+      expect(instance.scoreFunction(0)).toBeCloseTo(1.0, 4);
+      expect(instance.scoreFunction(1)).toBeCloseTo(0.3333, 4);
+      expect(instance.scoreFunction(2)).toBeCloseTo(0.1111, 4);
+    });
   });
 
   describe("handleGuess function", () => {
@@ -86,14 +92,29 @@ describe("Index", () => {
     });
   });
 
-  it("contains a correct sectionToDisplay function", () => {
-    const instance = mounted().instance();
-    expect(
-      mount(instance.sectionToDisplay("start")).find("#Start")
-    ).toHaveLength(1);
-    expect(
-      mount(instance.sectionToDisplay("flash cards")).find("#flash_cards")
-    ).toHaveLength(1);
+  describe("clearProgress function", () => {
+    it("clears state and calls localStorage.removeItem", () => {
+      const instance = mounted().instance();
+      const spy = jest.spyOn(global.localStorage, "removeItem");
+      const words = instance.state.words;
+      words[0].correct = 2;
+      instance.setState({ words: words });
+      instance.clearProgress();
+      expect(instance.state.words[0].correct).toEqual(0);
+      expect(spy).toBeCalled();
+    });
+  });
+
+  describe("sectionToDisplay function", () => {
+    it("works as expected", () => {
+      const instance = mounted().instance();
+      expect(
+        mount(instance.sectionToDisplay("start")).find("#Start")
+      ).toHaveLength(1);
+      expect(
+        mount(instance.sectionToDisplay("flash cards")).find("#flash_cards")
+      ).toHaveLength(1);
+    });
   });
 
   it("has a proper styles function", () => {

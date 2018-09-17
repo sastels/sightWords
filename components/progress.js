@@ -102,6 +102,10 @@ export class Progress extends Component {
           })}
         </div>
 
+        <Button className={classes.button} onClick={this.props.clearProgress}>
+          Clear all progress
+        </Button>
+
         <Button
           className={classes.button}
           onClick={this.props.switchToFlashCards}
@@ -116,7 +120,8 @@ export class Progress extends Component {
 Progress.propTypes = {
   classes: PropTypes.object.isRequired,
   words: PropTypes.array.isRequired,
-  switchToFlashCards: PropTypes.func.isRequired
+  switchToFlashCards: PropTypes.func.isRequired,
+  clearProgress: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Progress);

@@ -79,6 +79,15 @@ export class Index extends Component {
     localStorage.setItem("sightWordsData", JSON.stringify(words));
   };
 
+  clearProgress = () => {
+    let words = this.state.words;
+    words.forEach(w => {
+      w.correct = 0;
+    });
+    this.setState({ words: words });
+    localStorage.removeItem("sightWordsData");
+  };
+
   sectionToDisplay = section => {
     switch (section) {
       case "start":
@@ -88,6 +97,7 @@ export class Index extends Component {
           <Progress
             words={this.state.words}
             switchToFlashCards={() => this.setState({ section: "flash cards" })}
+            clearProgress={this.clearProgress}
           />
         );
       case "flash cards":
