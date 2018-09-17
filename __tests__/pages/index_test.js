@@ -6,6 +6,9 @@ import { NUM_CORRECT_NEEDED } from "../../utils/constants";
 const { axe, toHaveNoViolations } = require("jest-axe");
 expect.extend(toHaveNoViolations);
 
+global.localStorage = { setItem: jest.fn(), getItem: jest.fn() };
+global.localStorage.getItem.mockReturnValue(null);
+
 describe("Index", () => {
   let props;
   let _mounted;
