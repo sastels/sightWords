@@ -18,9 +18,17 @@ export const styles = () => ({
     marginRight: "10%",
     textTransform: "none",
     marginTop: "20px",
+    marginBottom: "30px"
+  },
+  bottomButton: {
+    marginLeft: "10%",
+    marginRight: "10%",
+    textTransform: "none",
+    marginTop: "20px",
     marginBottom: "30px",
     fontSize: "30px"
   },
+
   topBar: {
     textAlign: "center"
   },
@@ -112,7 +120,7 @@ export class FlashCards extends Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={classes.bottomButton}
             onClick={() => this.answer(text, false)}
           >
             Try again
@@ -121,7 +129,7 @@ export class FlashCards extends Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={classes.bottomButton}
             onClick={() => this.answer(text, true)}
           >
             Correct!
