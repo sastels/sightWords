@@ -35,28 +35,34 @@ export class Index extends Component {
   };
 
   componentDidMount = () => {
-    let words = [];
-    words = words.concat(
-      prePrimer.map(w => {
-        return { text: w, level: 1 };
-      })
-    );
-    words = words.concat(
-      primer.map(w => {
-        return { text: w, level: 2 };
-      })
-    );
-    words = words.concat(
-      grade1.map(w => {
-        return { text: w, level: 3 };
-      })
-    );
+    let words = JSON.parse(localStorage.getItem("sightWordsData"));
+    if (words) {
+      console.log("using localStorage"); // eslint-disable-line no-console
+    } else {
+      console.log("no localStorage found, starting from scratch"); // eslint-disable-line no-console
+      words = [];
+      words = words.concat(
+        prePrimer.map(w => {
+          return { text: w, level: 1, correct: 0 };
+        })
+      );
+      words = words.concat(
+        primer.map(w => {
+          return { text: w, level: 2, correct: 0 };
+        })
+      );
+      words = words.concat(
+        grade1.map(w => {
+          return { text: w, level: 3, correct: 0 };
+        })
+      );
+    }
 
     words.forEach(w => {
-      w.correct = 0;
       w.score = this.scoreFunction(w.level);
     });
     this.setState({ words: words });
+    localStorage.setItem("sightWordsData", JSON.stringify(words));
   };
 
   scoreFunction = level => 1.0 / Math.pow(3, level);
@@ -69,6 +75,17 @@ export class Index extends Component {
     w.correct += isCorrect ? 1 : -1;
     w.correct = Math.max(w.correct, 0);
     w.correct = Math.min(w.correct, NUM_CORRECT_NEEDED);
+    this.setState({ words: words });
+    localStorage.setItem("sightWordsData", JSON.stringify(words));
+  };
+
+  clearProgress = () => {
+    let words = this.state.words;
+    words.forEach(w => {
+      w.correct = 0;
+    });
+    this.setState({ words: words });
+    localStorage.removeItem("sightWordsData");
   };
 
   sectionToDisplay = section => {
@@ -80,6 +97,7 @@ export class Index extends Component {
           <Progress
             words={this.state.words}
             switchToFlashCards={() => this.setState({ section: "flash cards" })}
+            clearProgress={this.clearProgress}
           />
         );
       case "flash cards":
