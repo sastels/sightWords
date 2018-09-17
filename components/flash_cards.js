@@ -18,7 +18,8 @@ export const styles = () => ({
     marginRight: "10%",
     textTransform: "none",
     marginTop: "20px",
-    marginBottom: "30px"
+    marginBottom: "30px",
+    fontSize: "30px"
   },
   topBar: {
     textAlign: "center"
