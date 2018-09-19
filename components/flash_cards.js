@@ -45,7 +45,7 @@ export class FlashCards extends Component {
   state = { count: 0 };
 
   drawAlreadyKnown = (words, minWordsNeeded) => {
-    const known = words.filter(w => w.correct === NUM_CORRECT_NEEDED);
+    const known = words.filter(w => w.correct >= NUM_CORRECT_NEEDED);
     if (known.length < minWordsNeeded) {
       return undefined;
     }
@@ -54,7 +54,7 @@ export class FlashCards extends Component {
 
   drawNotKnownYet = words => {
     let totalScore = 0;
-    const notKnown = words.filter(w => w.correct !== NUM_CORRECT_NEEDED);
+    const notKnown = words.filter(w => w.correct < NUM_CORRECT_NEEDED);
     if (notKnown.length === 0) {
       return undefined;
     }

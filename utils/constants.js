@@ -1,1 +1,1 @@
-export const NUM_CORRECT_NEEDED = 2;
+export const NUM_CORRECT_NEEDED = 1;
