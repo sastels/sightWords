@@ -26,7 +26,7 @@ export const styles = () => ({
     textTransform: "none",
     marginTop: "20px",
     marginBottom: "30px",
-    fontSize: "30px"
+    fontSize: "20px"
   },
 
   topBar: {
