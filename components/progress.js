@@ -21,12 +21,14 @@ export const styles = () => ({
     marginLeft: "auto",
     marginRight: "auto"
   },
+  buttonBar: {
+    marginTop: "20px"
+  },
   button: {
-    marginLeft: "10%",
-    marginRight: "10%",
     textTransform: "none",
-    marginTop: "20px",
-    marginBottom: "30px"
+    marginLeft: "20px",
+    marginRight: "20px",
+    marginBottom: "10px"
   },
   expansionGroup: {
     marginTop: "20px",
@@ -102,16 +104,18 @@ export class Progress extends Component {
           })}
         </div>
 
-        <Button className={classes.button} onClick={this.props.clearProgress}>
-          Clear all progress
-        </Button>
+        <div className={classes.buttonBar}>
+          <Button className={classes.button} onClick={this.props.clearProgress}>
+            Clear all progress
+          </Button>
 
-        <Button
-          className={classes.button}
-          onClick={this.props.switchToFlashCards}
-        >
-          Back to the Flash Cards
-        </Button>
+          <Button
+            className={classes.button}
+            onClick={this.props.switchToFlashCards}
+          >
+            Back to the Flash Cards
+          </Button>
+        </div>
       </div>
     );
   }
