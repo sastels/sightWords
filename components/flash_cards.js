@@ -9,7 +9,7 @@ export const styles = () => ({
   word: {
     margin: "0",
     position: "absolute",
-    top: "50%",
+    top: "47%",
     left: "50%",
     transform: "translate(-50%, -50%)"
   },
@@ -20,6 +20,15 @@ export const styles = () => ({
     marginTop: "20px",
     marginBottom: "30px"
   },
+  bottomButton: {
+    marginLeft: "10%",
+    marginRight: "10%",
+    textTransform: "none",
+    marginTop: "20px",
+    marginBottom: "30px",
+    fontSize: "20px"
+  },
+
   topBar: {
     textAlign: "center"
   },
@@ -36,7 +45,7 @@ export class FlashCards extends Component {
   state = { count: 0 };
 
   drawAlreadyKnown = (words, minWordsNeeded) => {
-    const known = words.filter(w => w.correct === NUM_CORRECT_NEEDED);
+    const known = words.filter(w => w.correct >= NUM_CORRECT_NEEDED);
     if (known.length < minWordsNeeded) {
       return undefined;
     }
@@ -45,7 +54,7 @@ export class FlashCards extends Component {
 
   drawNotKnownYet = words => {
     let totalScore = 0;
-    const notKnown = words.filter(w => w.correct !== NUM_CORRECT_NEEDED);
+    const notKnown = words.filter(w => w.correct < NUM_CORRECT_NEEDED);
     if (notKnown.length === 0) {
       return undefined;
     }
@@ -111,7 +120,7 @@ export class FlashCards extends Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={classes.bottomButton}
             onClick={() => this.answer(text, false)}
           >
             Try again
@@ -120,7 +129,7 @@ export class FlashCards extends Component {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            className={classes.bottomButton}
             onClick={() => this.answer(text, true)}
           >
             Correct!
