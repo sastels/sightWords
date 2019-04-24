@@ -20,7 +20,8 @@ describe("Progress screen", () => {
     props = {
       classes: {},
       words: wordsFixure,
-      switchToFlashCards: jest.fn()
+      switchToFlashCards: jest.fn(),
+      clearProgress: jest.fn()
     };
     _mounted = undefined;
   });
