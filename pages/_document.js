@@ -1,5 +1,5 @@
 import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 import { extractCritical } from "emotion-server";
 import JssProvider from "react-jss/lib/JssProvider";
 import flush from "styled-jsx/server";
@@ -20,10 +20,7 @@ class MyDocument extends Document {
         registry={pageContext.sheetsRegistry}
         generateClassName={pageContext.generateClassName}
       >
-        <MuiThemeProvider
-          theme={pageContext.theme}
-          sheetsManager={pageContext.sheetsManager}
-        >
+        <MuiThemeProvider theme={pageContext.theme}>
           <Component pageContext={pageContext} {...props} />
         </MuiThemeProvider>
       </JssProvider>
@@ -61,7 +58,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <html>
+      <Html>
         <Head>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
@@ -69,7 +66,7 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
