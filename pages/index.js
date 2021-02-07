@@ -24,7 +24,7 @@ export const styles = theme => ({
     padding: "10px"
   },
   title: {
-    marginBottom: 4 * theme.spacing.unit
+    marginBottom: theme.spacing(4)
   }
 });
 

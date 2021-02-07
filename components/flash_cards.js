@@ -112,7 +112,7 @@ export class FlashCards extends Component {
           See Progress
         </Button>
 
-        <Typography id="word" variant="display4" className={classes.word}>
+        <Typography id="word" variant="h2" className={classes.word}>
           {text}
         </Typography>
 
