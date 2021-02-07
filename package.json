@@ -1,7 +1,7 @@
 {
-  "name": "vac-poc",
+  "name": "sightwords",
   "license": "MIT",
-  "description": "Proof of concept for VAC benefits navigator",
+  "description": "Flash cards for Dolch sight words",
   "engines": {
     "node": "11"
   },
